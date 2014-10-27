@@ -9,7 +9,7 @@
 #import "PECropViewController.h"
 #import "PECropView.h"
 
-@interface PECropViewController () <UIActionSheetDelegate>
+@interface PECropViewController () <UIActionSheetDelegate, PECropViewDelegate>
 
 @property (nonatomic) PECropView *cropView;
 @property (nonatomic) UIActionSheet *actionSheet;
@@ -73,6 +73,7 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
     self.view = contentView;
     
     self.cropView = [[PECropView alloc] initWithFrame:contentView.bounds];
+    self.cropView.delegate = self;
     [contentView addSubview:self.cropView];
 }
 
@@ -201,6 +202,15 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 - (void)resetCropRectAnimated:(BOOL)animated
 {
     [self.cropView resetCropRectAnimated:animated];
+}
+
+#pragma mark - PECropViewController
+
+- (void)cropViewDidChangeCropArea:(PECropView *)cropView
+{
+    if ([self.delegate respondsToSelector:@selector(cropViewControllerDidChangeCropArea:)]) {
+        [self.delegate cropViewControllerDidChangeCropArea:self];
+    }
 }
 
 #pragma mark -

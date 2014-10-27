@@ -440,6 +440,8 @@ static const CGFloat MarginLeft = 20.0f;
 {
     self.resizing = NO;
     [self zoomToCropRect:self.cropRectView.frame];
+    
+    [self.delegate cropViewDidChangeCropArea:self];
 }
 
 - (void)zoomToCropRect:(CGRect)toRect andCenter:(BOOL)center
