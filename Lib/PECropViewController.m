@@ -61,47 +61,38 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 
 - (void)commonInit {
     self.rotationEnabled = YES;
-}
-
-#pragma mark -
-
-- (void)loadView
-{
-    UIView *contentView = [[UIView alloc] init];
-    contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    contentView.backgroundColor = [UIColor blackColor];
-    self.view = contentView;
-    
-    self.cropView = [[PECropView alloc] initWithFrame:contentView.bounds];
-    self.cropView.delegate = self;
-    [contentView addSubview:self.cropView];
+    self.toolbarHidden = YES;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.toolbar.translucent = NO;
-
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(cancel:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                           target:self
-                                                                                           action:@selector(done:)];
-
-    if (!self.toolbarItems) {
-        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                       target:nil
-                                                                                       action:nil];
-        UIBarButtonItem *constrainButton = [[UIBarButtonItem alloc] initWithTitle:PELocalizedString(@"Constrain", nil)
-                                                                            style:UIBarButtonItemStyleBordered
-                                                                           target:self
-                                                                           action:@selector(constrain:)];
-        self.toolbarItems = @[flexibleSpace, constrainButton, flexibleSpace];
-    }
-    self.navigationController.toolbarHidden = self.toolbarHidden;
+        self.navigationController.navigationBar.translucent = NO;
+        self.navigationController.toolbar.translucent = NO;
+    
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                              target:self
+                                                                                              action:@selector(cancel:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                               target:self
+                                                                                               action:@selector(done:)];
+    
+        if (!self.toolbarItems) {
+            UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                           target:nil
+                                                                                           action:nil];
+            UIBarButtonItem *constrainButton = [[UIBarButtonItem alloc] initWithTitle:PELocalizedString(@"Constrain", nil)
+                                                                                style:UIBarButtonItemStyleBordered
+                                                                               target:self
+                                                                               action:@selector(constrain:)];
+            self.toolbarItems = @[flexibleSpace, constrainButton, flexibleSpace];
+        }
+        self.navigationController.toolbarHidden = self.toolbarHidden;
+    
+    self.cropView = [[PECropView alloc] initWithFrame:self.view.bounds];
+    self.cropView.delegate = self;
+    [self.view insertSubview:self.cropView atIndex:0];
     
     self.cropView.image = self.image;
     
@@ -215,20 +206,30 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 
 #pragma mark -
 
-- (void)cancel:(id)sender
+- (IBAction)cancel:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(cropViewControllerDidCancel:)]) {
         [self.delegate cropViewControllerDidCancel:self];
     }
 }
 
-- (void)done:(id)sender
+- (IBAction)done:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(cropViewController:didFinishCroppingImage:transform:cropRect:)]) {
         [self.delegate cropViewController:self didFinishCroppingImage:self.cropView.croppedImage transform: self.cropView.rotation cropRect: self.cropView.zoomedCropRect];
     } else if ([self.delegate respondsToSelector:@selector(cropViewController:didFinishCroppingImage:)]) {
         [self.delegate cropViewController:self didFinishCroppingImage:self.cropView.croppedImage];
     }
+}
+
+- (IBAction)original:(id)sender
+{
+    [self resetCropRectAnimated:NO];
+}
+
+- (IBAction)square:(id)sender
+{
+    self.cropView.cropAspectRatio = 1.0f;
 }
 
 - (void)constrain:(id)sender

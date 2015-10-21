@@ -12,6 +12,11 @@
 
 @interface PECropViewController : UIViewController
 
+@property (nonatomic, strong) IBOutlet UIButton *cancelButton;
+@property (nonatomic, strong) IBOutlet UIButton *doneButton;
+@property (nonatomic, strong) IBOutlet UIButton *resetButton;
+@property (nonatomic, strong) IBOutlet UIButton *squareButton;
+
 @property (nonatomic, weak) id<PECropViewControllerDelegate> delegate;
 @property (nonatomic) UIImage *image;
 
@@ -32,6 +37,11 @@
 
 - (void)resetCropRect;
 - (void)resetCropRectAnimated:(BOOL)animated;
+
+- (IBAction)cancel:(id)sender;
+- (IBAction)done:(id)sender;
+- (IBAction)original:(id)sender;
+- (IBAction)square:(id)sender;
 
 @end
 
