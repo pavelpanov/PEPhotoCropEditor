@@ -34,6 +34,9 @@
 
 @property (nonatomic, readonly) CGRect zoomedCropRect;
 
+@property (nonatomic) CGRect cropViewRect;
+@property (nonatomic) UIColor *cropViewOverlayColor;
+
 
 - (void)resetCropRect;
 - (void)resetCropRectAnimated:(BOOL)animated;

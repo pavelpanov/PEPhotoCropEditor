@@ -28,6 +28,8 @@
 
 @property (nonatomic) CGFloat rotationAngle;
 
+@property (nonatomic) UIColor *overlayColor;
+
 @property (nonatomic, weak, readonly) UIRotationGestureRecognizer *rotationGestureRecognizer;
 
 - (void)resetCropRect;

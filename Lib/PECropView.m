@@ -166,9 +166,9 @@ static const CGFloat MarginLeft = 20.0f;
 - (void)layoutOverlayViewsWithCropRect:(CGRect)cropRect
 {
     self.topOverlayView.frame = CGRectMake(0.0f,
-                                           0.0f,
+                                           -100.0f,
                                            CGRectGetWidth(self.bounds),
-                                           CGRectGetMinY(cropRect));
+                                           CGRectGetMinY(cropRect) + 100);
     self.leftOverlayView.frame = CGRectMake(0.0f,
                                             CGRectGetMinY(cropRect),
                                             CGRectGetMinX(cropRect),
@@ -180,7 +180,7 @@ static const CGFloat MarginLeft = 20.0f;
     self.bottomOverlayView.frame = CGRectMake(0.0f,
                                               CGRectGetMaxY(cropRect),
                                               CGRectGetWidth(self.bounds),
-                                              CGRectGetHeight(self.bounds) - CGRectGetMaxY(cropRect));
+                                              CGRectGetHeight(self.bounds) - CGRectGetMaxY(cropRect) + 100);
 }
 
 - (void)setupImageView
@@ -418,6 +418,16 @@ static const CGFloat MarginLeft = 20.0f;
             [self zoomToCropRect:self.cropRectView.frame];
         } completion:NULL];
     }
+}
+
+- (void)setOverlayColor:(UIColor *)overlayColor
+{
+    _overlayColor = overlayColor;
+    
+    self.topOverlayView.backgroundColor = overlayColor;
+    self.leftOverlayView.backgroundColor = overlayColor;
+    self.rightOverlayView.backgroundColor = overlayColor;
+    self.bottomOverlayView.backgroundColor = overlayColor;
 }
 
 #pragma mark -
