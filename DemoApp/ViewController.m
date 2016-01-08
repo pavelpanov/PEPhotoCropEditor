@@ -63,7 +63,6 @@
 - (IBAction)openEditor:(id)sender
 {
     PECropViewController *controller = [[PECropViewController alloc] init];
-    controller.cropViewRect = CGRectMake(0, 50, self.view.bounds.size.width, self.view.bounds.size.height - 100);
     controller.cropViewOverlayColor = [[UIColor redColor] colorWithAlphaComponent:0.4];
     controller.delegate = self;
     controller.image = self.imageView.image;

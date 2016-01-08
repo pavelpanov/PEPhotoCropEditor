@@ -16,6 +16,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *doneButton;
 @property (nonatomic, strong) IBOutlet UIButton *resetButton;
 @property (nonatomic, strong) IBOutlet UIButton *squareButton;
+@property (nonatomic, strong) IBOutlet UIView *cropViewContainer;
 
 @property (nonatomic, weak) id<PECropViewControllerDelegate> delegate;
 @property (nonatomic) UIImage *image;
@@ -34,7 +35,6 @@
 
 @property (nonatomic, readonly) CGRect zoomedCropRect;
 
-@property (nonatomic) CGRect cropViewRect;
 @property (nonatomic) UIColor *cropViewOverlayColor;
 
 

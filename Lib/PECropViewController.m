@@ -90,14 +90,13 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
         }
         self.navigationController.toolbarHidden = self.toolbarHidden;
     
-    if (CGRectEqualToRect(self.cropViewRect, CGRectZero))
-        self.cropViewRect = self.view.bounds;
+    UIView *containerView = (self.cropViewContainer) ? self.cropViewContainer : self.view;
     
-    self.cropView = [[PECropView alloc] initWithFrame:self.cropViewRect];
+    self.cropView = [[PECropView alloc] initWithFrame:containerView.bounds];
     if (self.cropViewOverlayColor)
         self.cropView.overlayColor = self.cropViewOverlayColor;
     self.cropView.delegate = self;
-    [self.view insertSubview:self.cropView atIndex:0];
+    [containerView insertSubview:self.cropView atIndex:0];
     
     self.cropView.image = self.image;
     
