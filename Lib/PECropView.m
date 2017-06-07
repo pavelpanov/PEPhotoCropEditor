@@ -129,32 +129,17 @@ static const CGFloat MarginLeft = 20.0f;
         return;
     }
     
-    UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
-        self.editingRect = CGRectInset(self.bounds, MarginLeft, MarginTop);
-    } else {
-        self.editingRect = CGRectInset(self.bounds, MarginLeft, MarginLeft);
-    }
+    self.editingRect = CGRectInset(self.bounds, MarginLeft, MarginTop);
     
     if (!self.imageView) {
-        if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
-            self.insetRect = CGRectInset(self.bounds, MarginLeft, MarginTop);
-        } else {
-            self.insetRect = CGRectInset(self.bounds, MarginLeft, MarginLeft);
-        }
+        self.insetRect = CGRectInset(self.bounds, MarginLeft, MarginTop);
         
         [self setupImageView];
     }
     
     if (!self.isResizing) {
         [self layoutCropRectViewWithCropRect:self.scrollView.frame];
-        
-        if (self.interfaceOrientation != interfaceOrientation) {
-            [self zoomToCropRect:self.scrollView.frame];
-        }
     }
-    
-    self.interfaceOrientation = interfaceOrientation;
 }
 
 - (void)layoutCropRectViewWithCropRect:(CGRect)cropRect
@@ -329,12 +314,7 @@ static const CGFloat MarginLeft = 20.0f;
     CGSize size = self.image.size;
     
     CGFloat ratio = 1.0f;
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad || UIInterfaceOrientationIsPortrait(orientation)) {
-        ratio = CGRectGetWidth(AVMakeRectWithAspectRatioInsideRect(self.image.size, self.insetRect)) / size.width;
-    } else {
-        ratio = CGRectGetHeight(AVMakeRectWithAspectRatioInsideRect(self.image.size, self.insetRect)) / size.height;
-    }
+    ratio = CGRectGetWidth(AVMakeRectWithAspectRatioInsideRect(self.image.size, self.insetRect)) / size.width;
     
     CGRect zoomedCropRect = CGRectMake(cropRect.origin.x / ratio,
                                        cropRect.origin.y / ratio,
