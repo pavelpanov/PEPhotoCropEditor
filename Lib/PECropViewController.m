@@ -9,10 +9,9 @@
 #import "PECropViewController.h"
 #import "PECropView.h"
 
-@interface PECropViewController () <UIActionSheetDelegate, PECropViewDelegate>
+@interface PECropViewController () <PECropViewDelegate>
 
 @property (nonatomic) PECropView *cropView;
-@property (nonatomic) UIActionSheet *actionSheet;
 
 - (void)commonInit;
 
@@ -238,28 +237,13 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 
 - (void)constrain:(id)sender
 {
-    self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                   delegate:self
-                                          cancelButtonTitle:PELocalizedString(@"Cancel", nil)
-                                     destructiveButtonTitle:nil
-                                          otherButtonTitles:
-                        PELocalizedString(@"Original", nil),
-                        PELocalizedString(@"Square", nil),
-                        PELocalizedString(@"3 x 2", nil),
-                        PELocalizedString(@"3 x 5", nil),
-                        PELocalizedString(@"4 x 3", nil),
-                        PELocalizedString(@"4 x 6", nil),
-                        PELocalizedString(@"5 x 7", nil),
-                        PELocalizedString(@"8 x 10", nil),
-                        PELocalizedString(@"16 x 9", nil), nil];
-    [self.actionSheet showFromToolbar:self.navigationController.toolbar];
-}
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:PELocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        //
+    }];
 
-#pragma mark -
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
+    UIAlertAction *a1 = [UIAlertAction actionWithTitle:PELocalizedString(@"Original", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         CGRect cropRect = self.cropView.cropRect;
         CGSize size = self.cropView.image.size;
         CGFloat width = size.width;
@@ -273,31 +257,61 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
             cropRect.size = CGSizeMake(CGRectGetWidth(cropRect), CGRectGetWidth(cropRect) * ratio);
         }
         self.cropView.cropRect = cropRect;
-    } else if (buttonIndex == 1) {
+    }];
+    
+    UIAlertAction *a2 = [UIAlertAction actionWithTitle:PELocalizedString(@"Original", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.cropView.cropAspectRatio = 1.0f;
-    } else if (buttonIndex == 2) {
+    }];
+    
+    UIAlertAction *a3 = [UIAlertAction actionWithTitle:PELocalizedString(@"Original", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.cropView.cropAspectRatio = 2.0f / 3.0f;
-    } else if (buttonIndex == 3) {
+    }];
+    
+    UIAlertAction *a4 = [UIAlertAction actionWithTitle:PELocalizedString(@"Original", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.cropView.cropAspectRatio = 3.0f / 5.0f;
-    } else if (buttonIndex == 4) {
+    }];
+    
+    UIAlertAction *a5 = [UIAlertAction actionWithTitle:PELocalizedString(@"Original", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         CGFloat ratio = 3.0f / 4.0f;
         CGRect cropRect = self.cropView.cropRect;
         CGFloat width = CGRectGetWidth(cropRect);
         cropRect.size = CGSizeMake(width, width * ratio);
         self.cropView.cropRect = cropRect;
-    } else if (buttonIndex == 5) {
+    }];
+    
+    UIAlertAction *a6 = [UIAlertAction actionWithTitle:PELocalizedString(@"Original", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.cropView.cropAspectRatio = 4.0f / 6.0f;
-    } else if (buttonIndex == 6) {
+    }];
+    
+    UIAlertAction *a7 = [UIAlertAction actionWithTitle:PELocalizedString(@"Original", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.cropView.cropAspectRatio = 5.0f / 7.0f;
-    } else if (buttonIndex == 7) {
+    }];
+    
+    UIAlertAction *a8 = [UIAlertAction actionWithTitle:PELocalizedString(@"Original", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.cropView.cropAspectRatio = 8.0f / 10.0f;
-    } else if (buttonIndex == 8) {
+    }];
+    
+    UIAlertAction *a9 = [UIAlertAction actionWithTitle:PELocalizedString(@"Original", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         CGFloat ratio = 9.0f / 16.0f;
         CGRect cropRect = self.cropView.cropRect;
         CGFloat width = CGRectGetWidth(cropRect);
         cropRect.size = CGSizeMake(width, width * ratio);
         self.cropView.cropRect = cropRect;
-    }
+    }];
+    
+    [alert addAction:a1];
+    [alert addAction:a2];
+    [alert addAction:a3];
+    [alert addAction:a4];
+    [alert addAction:a5];
+    [alert addAction:a6];
+    [alert addAction:a7];
+    [alert addAction:a8];
+    [alert addAction:a9];
+    [alert addAction:cancel];
+
+    [self presentViewController:alert animated:YES completion:nil];
 }
+
 
 @end
